@@ -1,0 +1,20 @@
+distinct numbers: https://cses.fi/problemset/task/1621
+  
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        HashMap<Integer, Boolean> map = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            int x = scanner.nextInt();
+            map.put(x, true);
+        }
+        scanner.close();
+
+        System.out.println(map.size());
+    }
+}
