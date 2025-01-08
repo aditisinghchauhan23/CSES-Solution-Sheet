@@ -1,0 +1,19 @@
+weird algorithm: https://cses.fi/problemset/task/1068/
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        long n = scanner.nextLong();
+        scanner.close();
+
+        StringBuilder result = new StringBuilder();
+        while (n != 1) {
+            result.append(n).append(" ");
+            n = (n % 2 == 0) ? (n / 2) : (n * 3 + 1);
+        }
+        result.append(1);
+        System.out.println(result);
+    }
+}
