@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solver {
+public:
+    int n, m;
+    vector<string> grid;
+    pair<int, int> start, end;
+    
+    Solver(int n, int m, vector<string>& grid) : n(n), m(m), grid(grid) {}
+    
+    bool bfs() {
+        queue<tuple<int, int, string>> q;
+        vector<vector<bool>> visited(n, vector<bool>(m, false));
+        vector<pair<int, int>> moves = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        vector<char> moveDir = {'U', 'D', 'L', 'R'};
+        
+        q.push({start.first, start.second, ""});
+        visited[start.first][start.second] = true;
+        
+        while (!q.empty()) {
+            auto [x, y, path] = q.front(); q.pop();
+            if (x == end.first && y == end.second) {
+                cout << "YES\n" << path.length() << "\n" << path << "\n";
+                return true;
+            }
+            for (int i = 0; i < 4; i++) {
+                int nx = x + moves[i].first, ny = y + moves[i].second;
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && grid[nx][ny] != '#' && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    q.push({nx, ny, path + moveDir[i]});
+                }
+            }
+        }
+        cout << "NO\n";
+        return false;
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    
+    int n, m;
+    cin >> n >> m;
+    vector<string> grid(n);
+    pair<int, int> start, end;
+    
+    for (int i = 0; i < n; i++) {
+        cin >> grid[i];
+        for (int j = 0; j < m; j++) {
+            if (grid[i][j] == 'A') start = {i, j};
+            if (grid[i][j] == 'B') end = {i, j};
+        }
+    }
+    
+    Solver solver(n, m, grid);
+    solver.start = start;
+    solver.end = end;
+    solver.bfs();
+    
+    return 0;
+}
