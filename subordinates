@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class StructClass {
+public:
+    vector<int> subordinates;
+};
+
+class Solver {
+public:
+    int n;
+    vector<StructClass> employees;
+    vector<int> subCount;
+    
+    Solver(int n) : n(n), employees(n + 1), subCount(n + 1, 0) {}
+    
+    void addEdge(int boss, int employee) {
+        employees[boss].subordinates.push_back(employee);
+    }
+    
+    void dfs(int node) {
+        for (int sub : employees[node].subordinates) {
+            dfs(sub);
+            subCount[node] += 1 + subCount[sub];
+        }
+    }
+    
+    void solve() {
+        dfs(1);
+        for (int i = 1; i <= n; i++) {
+            cout << subCount[i] << " ";
+        }
+        cout << "\n";
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    
+    int n;
+    cin >> n;
+    Solver solver(n);
+    
+    for (int i = 2; i <= n; i++) {
+        int boss;
+        cin >> boss;
+        solver.addEdge(boss, i);
+    }
+    
+    solver.solve();
+    return 0;
+}
