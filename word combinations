@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MOD = 1e9 + 7;
+
+class Solver {
+public:
+    string s;
+    int n, k;
+    unordered_set<string> dict;
+    vector<int> dp;
+    
+    Solver(string s, int k, vector<string>& words) : s(s), n(s.size()), k(k), dp(n + 1, -1) {
+        for (const string& word : words) {
+            dict.insert(word);
+        }
+    }
+    
+    int countWays(int j) {
+        if (j == n) return 1;
+        if (dp[j] != -1) return dp[j];
+        
+        int ways = 0;
+        string curr = "";
+        for (int i = j; i < n; i++) {
+            curr += s[i];
+            if (dict.count(curr)) {
+                ways = (ways + countWays(i + 1)) % MOD;
+            }
+        }
+        return dp[j] = ways;
+    }
+    
+    void solve() {
+        cout << countWays(0) << "\n";
+    }
+};
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    
+    string s;
+    int k;
+    cin >> s >> k;
+    vector<string> words(k);
+    for (int i = 0; i < k; i++) {
+        cin >> words[i];
+    }
+    
+    Solver solver(s, k, words);
+    solver.solve();
+    
+    return 0;
+}
