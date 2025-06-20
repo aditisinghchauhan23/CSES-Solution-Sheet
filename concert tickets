@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int n, m;
+    cin >> n >> m;
+    
+    vector<int> tickets(n);
+    for (int i = 0; i < n; i++) {
+        cin >> tickets[i];
+    }
+    sort(tickets.begin(), tickets.end());
+
+    set<int> available;
+    for (int i = 0; i < n; i++) {
+        available.insert(i);
+    }
+    
+    for (int i = 0; i < m; i++) {
+        int maxPrice;
+        cin >> maxPrice;
+        int left = 0, right = n - 1, bestIdx = -1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (tickets[mid] <= maxPrice) {
+                bestIdx = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        if (bestIdx == -1) {
+            cout << -1 << "\n";
+            continue;
+        }
+        
+        auto it = available.upper_bound(bestIdx);
+        if (it == available.begin()) {
+            cout << -1 << "\n";
+        } else {
+            --it;
+            int ticketIdx = *it;
+            cout << tickets[ticketIdx] << "\n";
+            available.erase(it);
+        }
+    }
+    
+    return 0;
+}
